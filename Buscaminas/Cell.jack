@@ -1,0 +1,75 @@
+/**
+ * Cell: representa UNA casilla del Buscaminas.
+ * Guarda su posicion en pantalla (pixeles), su posicion logica
+ * (fila/columna) y su estado. En el Hito 1 solo se dibuja cubierta;
+ * los campos de estado quedan listos para el hito final.
+ */
+class Cell {
+    field int x, y;            // esquina superior izquierda en pixeles
+    field int row, col;        // posicion logica dentro del tablero
+    field boolean hasMine;     // hito final: si contiene mina
+    field boolean revealed;    // hito final: si ya fue destapada
+    field boolean flagged;     // hito final: si tiene bandera
+    field int adjacent;        // hito final: minas vecinas
+
+    /** Tamano de cada casilla en pixeles (20x20). */
+    function int size() {
+        return 20;
+    }
+
+    /** Crea una casilla cubierta, sin mina y sin bandera. */
+    constructor Cell new(int Ax, int Ay, int Arow, int Acol) {
+        let x = Ax;
+        let y = Ay;
+        let row = Arow;
+        let col = Acol;
+        let hasMine = false;
+        let revealed = false;
+        let flagged = false;
+        let adjacent = 0;
+        return this;
+    }
+
+    /** Dibuja la casilla segun su estado (en el Hito 1 siempre cubierta). */
+    method void draw() {
+        do drawCovered();
+        return;
+    }
+
+    /** Casilla cubierta: fondo blanco, borde negro y "sombra" abajo/derecha
+        para que parezca un boton en relieve. */
+    method void drawCovered() {
+        var int x2, y2;
+        let x2 = x + 19;
+        let y2 = y + 19;
+
+        // 1. Limpiar el area de la casilla (blanco)
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x2, y2);
+
+        // 2. Borde negro de 1 pixel
+        do Screen.setColor(true);
+        do Screen.drawLine(x, y, x2, y);      // arriba
+        do Screen.drawLine(x, y2, x2, y2);    // abajo
+        do Screen.drawLine(x, y, x, y2);      // izquierda
+        do Screen.drawLine(x2, y, x2, y2);    // derecha
+
+        // 3. Sombra interior (efecto relieve)
+        do Screen.drawRectangle(x + 3, y + 16, x + 17, y + 17);   // inferior
+        do Screen.drawRectangle(x + 16, y + 3, x + 17, y + 17);   // derecha
+        return;
+    }
+
+    /** Getters (se usaran en el hito final). */
+    method int getRow() { return row; }
+    method int getCol() { return col; }
+    method boolean hasMine() { return hasMine; }
+    method boolean isRevealed() { return revealed; }
+    method boolean isFlagged() { return flagged; }
+
+    /** Libera la memoria del objeto. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

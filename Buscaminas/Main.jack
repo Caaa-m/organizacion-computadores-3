@@ -1,0 +1,21 @@
+
+class Main {
+    function void main() {
+        var Board board;
+        var Panel panel;
+
+        do Screen.clearScreen();
+
+        // Tablero 10x10 de 200x200 px, con esquina en (30, 28)
+        let board = Board.new(30, 28);
+        // Panel derecho: x=256..499, y=20..235
+        let panel = Panel.new(256, 20, 244, 216);
+
+        do board.draw();
+        do panel.draw(board.getRows(), board.getCols(), board.getMines());
+
+        // En el hito final aqui ira el ciclo del juego (teclado, revelar, etc.)
+        // y al terminar: do board.dispose(); do panel.dispose();
+        return;
+    }
+}

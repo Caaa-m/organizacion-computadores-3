@@ -1,0 +1,74 @@
+
+class Panel {
+    field int x, y, w, h;   // rectangulo del panel en pixeles
+
+    constructor Panel new(int Ax, int Ay, int Aw, int Ah) {
+        let x = Ax;
+        let y = Ay;
+        let w = Aw;
+        let h = Ah;
+        return this;
+    }
+
+    /** Dibuja el panel con los datos del tablero. */
+    method void draw(int rows, int cols, int mines) {
+        var Cell sample;
+
+        do drawBorder();
+
+        // Titulo
+        do Output.moveCursor(3, 39);
+        do Output.printString("BUSCAMINAS");
+        do Screen.setColor(true);
+        do Screen.drawLine(x + 12, 50, x + w - 12, 50);   // separador
+
+        // Datos del juego
+        do Output.moveCursor(6, 34);
+        do Output.printString("Tablero: ");
+        do Output.printInt(rows);
+        do Output.printString(" x ");
+        do Output.printInt(cols);
+
+        do Output.moveCursor(8, 34);
+        do Output.printString("Minas:   ");
+        do Output.printInt(mines);
+
+        do Output.moveCursor(10, 34);
+        do Output.printString("Banderas: 0");
+
+        do Output.moveCursor(12, 34);
+        do Output.printString("Estado:  Listo");
+
+        // Leyenda: reutiliza la clase Cell para dibujar un ejemplo
+        let sample = Cell.new(x + 16, 152, 0, 0);
+        do sample.draw();
+        do sample.dispose();
+        do Output.moveCursor(14, 38);
+        do Output.printString("= Celda cubierta");
+        return;
+    }
+
+    /** Doble borde rectangular alrededor del panel. */
+    method void drawBorder() {
+        var int x2, y2;
+        let x2 = x + w - 1;
+        let y2 = y + h - 1;
+        do Screen.setColor(true);
+        // borde exterior
+        do Screen.drawLine(x, y, x2, y);
+        do Screen.drawLine(x, y2, x2, y2);
+        do Screen.drawLine(x, y, x, y2);
+        do Screen.drawLine(x2, y, x2, y2);
+        // borde interior
+        do Screen.drawLine(x + 3, y + 3, x2 - 3, y + 3);
+        do Screen.drawLine(x + 3, y2 - 3, x2 - 3, y2 - 3);
+        do Screen.drawLine(x + 3, y + 3, x + 3, y2 - 3);
+        do Screen.drawLine(x2 - 3, y + 3, x2 - 3, y2 - 3);
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

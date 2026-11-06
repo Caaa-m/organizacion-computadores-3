@@ -1,0 +1,27 @@
+function Main.main 2
+call Screen.clearScreen 0
+pop temp 0
+push constant 30
+push constant 28
+call Board.new 2
+pop local 0
+push constant 256
+push constant 20
+push constant 244
+push constant 216
+call Panel.new 4
+pop local 1
+push local 0
+call Board.draw 1
+pop temp 0
+push local 1
+push local 0
+call Board.getRows 1
+push local 0
+call Board.getCols 1
+push local 0
+call Board.getMines 1
+call Panel.draw 4
+pop temp 0
+push constant 0
+return
